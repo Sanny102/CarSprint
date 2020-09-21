@@ -80,20 +80,23 @@ function draw() {
     if (downPressed && carSprite.velocity.y < 3.0) {
         carSprite.velocity.y += 0.1;
     }
-    if (carSprite.position.x < width) {
-        carSprite.remove();
-        setUpCar();
-    }
-    
-    if (carSprite.position.x < width || carSprite.position.y < height || carSprite.position.y > height - 50) {
-        carSprite.remove();
-        setUpCar();
-    }
-    // collide the car
-    for (let i = 0; i < grassImage.length; i++) {
-        if (carSprite.overlap(grassSprites[i])) {
+
+    if (carSprite) {
+        if (carSprite.position.x < width) {
             carSprite.remove();
             setUpCar();
+        }
+
+        if (carSprite.position.x < width || carSprite.position.y < height || carSprite.position.y > height - 50) {
+            carSprite.remove();
+            setUpCar();
+        }
+        // collide the car
+        for (let i = 0; i < grassImage.length; i++) {
+            if (carSprite.overlap(grassSprites[i])) {
+                carSprite.remove();
+                setUpCar();
+            }
         }
     }
 }
