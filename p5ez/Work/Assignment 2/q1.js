@@ -1,32 +1,32 @@
 let r = 15;
-let animation;
 let spriteH = 32;
 let spriteW = 32;
 let carSprite;
 let carImage;
+let grassImage;
+let roadImage;
+let finishImage;
 let x = 0;
 let y = 0;
 
 function preload() {
     noLoop();
-    fileContent = loadStrings('./../../track.txt');
-    console.log(fileContent)
-    grassImage = loadImage('./../../Images/green tile.png');
-    roadImage = loadImage('./../../Images/grey tile.png');
-    finishImage = loadImage('./../../Images/finish.png');
-    carImage = loadImage('./../../Images/car2.png');
+    fileContent = loadStrings('../../track.txt');
+    grassImage = loadImage('../../Images/green tile.png');
+    roadImage = loadImage('../../Images/grey tile.png');
+    finishImage = loadImage('../../Images/finish.png');
+    carImage = loadImage('../../Images/car2.png');
     setUpCar();
 }
 
 function setUpCar() {
-    debugger;
-    animation.push(carImage)
+    //animation.push(carImage)
     carSprite = createSprite(width / 2, height / 2);
     carSprite.addImage(carImage);
     carSprite.rotateToDirection = true;
     carSprite.friction = 0.01;
     carSprite.debug = true;
-    carImage.resize(25, 50);
+    carImage.resize(250, 500);
 }
 
 
@@ -38,12 +38,10 @@ function setup() {
     for (let i = 0; i < fileContent.length; i++) {
         let tokens = splitTokens(fileContent[i]);
 
-
         for (let j = 0; j < tokens.length; j++) {
             if (tokens[j] == 0) {
                 grass = createSprite((i * width / tokens.length) + r, (j * height / tokens.length) + r, 32, 32);
                 grass.addImage(grassImage);
-
             }
 
             else if (tokens[j] == 1) {
@@ -54,8 +52,10 @@ function setup() {
             else if (tokens[j] == 2) {
                 finish = createSprite((i * width / tokens.length) + r, (j * height / tokens.length) + r, 32, 32);
                 finish.addImage(finishImage);
-            }
 
+                car = createSprite((i * width / tokens.length) + r, (j * height / tokens.length) + r, 32, 32);
+                car.addImage(carImage);
+            }
         }
     }
 
@@ -63,10 +63,8 @@ function setup() {
 
 
 function draw() {
-    debugger;
     background(220);
     drawSprites();
-
 
     print(rightPressed);
     // animate the "car"
@@ -86,10 +84,8 @@ function draw() {
         carSprite.remove();
         setUpCar();
     }
-    if (carSprite.position.x < width)
-        (carSprite.position.x > width - 50)
-            (carSprite.position.y < height)
-            (carSprite.position.y > height - 50); {
+    
+    if (carSprite.position.x < width || carSprite.position.y < height || carSprite.position.y > height - 50) {
         carSprite.remove();
         setUpCar();
     }
@@ -101,7 +97,6 @@ function draw() {
         }
     }
 }
-
 
 function keyPressed() {
     // print("PRESS");
